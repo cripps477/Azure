@@ -1,0 +1,13 @@
+#### Create a Service Principal in Azure with Powershell
+Install-Module -Name AzureAD
+Install-Module -Name Az
+Import-Module -name azuread
+import-module -name az
+Connect-AzAccount
+$application = New-AzADApplication -DisplayName "Bitlocker"
+$servicePrincipal = New-AzADServicePrincipal -ApplicationId $application.AppId
+New-AzRoleAssignment -RoleDefinitionName "Security Reader" -ServicePrincipalName $servicePrincipal.AppId
+$endDate = (Get-Date).AddYears(3)
+$spCredential = New-AzADSpCredential -ServicePrincipalObjectId $servicePrincipal.Id -EndDate $endDate
+$ServicePrincipalSecret = $spCredential.SecretText
+Write-Output "Service Principal Secret: $ServicePrincipalSecret"
