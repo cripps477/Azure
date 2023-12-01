@@ -11,3 +11,7 @@ $endDate = (Get-Date).AddYears(3)
 $spCredential = New-AzADSpCredential -ServicePrincipalObjectId $servicePrincipal.Id -EndDate $endDate
 $ServicePrincipalSecret = $spCredential.SecretText
 Write-Output "Service Principal Secret: $ServicePrincipalSecret"
+#### Connect the service principal to Azure
+$securePassword = ConvertTo-SecureString 'secret' -AsPlainText -Force
+$psCredential = New-Object System.Management.Automation.PSCredential('fakeappidcan'tbea-variable-here', $securePassword)
+Connect-AzAccount -ServicePrincipal -Credential $psCredential -Tenant 'tenantid'
